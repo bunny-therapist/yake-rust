@@ -504,16 +504,16 @@ mod tests {
         kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
 
         let results: Results = vec![
-            ResultItem { raw: "data science".to_owned(), keyword: "data science".to_owned(), score: 0.0582 },
-            ResultItem { raw: "Google Cloud Platform".to_owned(), keyword: "google cloud platform".to_owned(), score: 0.0631 },
-            ResultItem { raw: "acquiring data science".to_owned(), keyword: "acquiring data science".to_owned(), score: 0.0704 },
-            ResultItem { raw: "science community Kaggle".to_owned(), keyword: "science community kaggle".to_owned(), score: 0.0768 },
-            ResultItem { raw: "acquiring Kaggle".to_owned(), keyword: "acquiring kaggle".to_owned(), score: 0.0904 },
-            ResultItem { raw: "CEO Anthony Goldbloom".to_owned(), keyword: "ceo anthony goldbloom".to_owned(), score: 0.0924 },
-            ResultItem { raw: "Google Cloud".to_owned(), keyword: "google cloud".to_owned(), score: 0.1061 },
-            ResultItem { raw: "Kaggle".to_owned(), keyword: "kaggle".to_owned(), score: 0.1165 },
-            ResultItem { raw: "Google".to_owned(), keyword: "google".to_owned(), score: 0.1344 },
-            ResultItem { raw: "Anthony Goldbloom declined".to_owned(), keyword: "anthony goldbloom declined".to_owned(), score: 0.1447 },
+            ResultItem { raw: "CEO Anthony Goldbloom".to_owned(), keyword: "ceo anthony goldbloom".to_owned(), score: 0.0463 },
+            ResultItem { raw: "Google Cloud Platform".to_owned(), keyword: "google cloud platform".to_owned(), score: 0.0566 },
+            ResultItem { raw: "data science".to_owned(), keyword: "data science".to_owned(), score: 0.0599 },
+            ResultItem { raw: "acquiring data science".to_owned(), keyword: "acquiring data science".to_owned(), score: 0.0735 },
+            ResultItem { raw: "science community Kaggle".to_owned(), keyword: "science community kaggle".to_owned(), score: 0.0795 },
+            ResultItem { raw: "San Francisco".to_owned(), keyword: "san francisco".to_owned(), score: 0.0909 },
+            ResultItem { raw: "acquiring Kaggle".to_owned(), keyword: "acquiring kaggle".to_owned(), score: 0.0915 },
+            ResultItem { raw: "Anthony Goldbloom declined".to_owned(), keyword: "anthony goldbloom declined".to_owned(), score: 0.0964 },
+            ResultItem { raw: "Google Cloud".to_owned(), keyword: "google cloud".to_owned(), score: 0.0969 },
+            ResultItem { raw: "Kaggle".to_owned(), keyword: "kaggle".to_owned(), score: 0.1167 },
         ];
 
         assert_eq!(kwds, results);
