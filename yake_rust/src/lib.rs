@@ -547,4 +547,18 @@ mod tests {
 
         assert_eq!(kwds, results);
     }
+
+    #[test]
+    fn medium_two() {
+        let text = "Do you need an Apple laptop?";
+        let mut kwds = super::Yake::new(Some(1), None).get_n_best(text.to_string(), Some(2));
+        // leave only 4 digits
+        kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
+        let results: Results = vec![
+            ResultItem { raw: "Apple".to_owned(), keyword: "apple".to_owned(), score: 0.1447 },
+            ResultItem { raw: "laptop".to_owned(), keyword: "laptop".to_owned(), score: 0.1583 },
+        ];
+
+        assert_eq!(kwds, results);
+    }
 }
