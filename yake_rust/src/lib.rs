@@ -503,16 +503,46 @@ mod tests {
         kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
 
         let results: Results = vec![
-            ResultItem { raw: "CEO Anthony Goldbloom".to_owned(), keyword: "ceo anthony goldbloom".to_owned(), score: 0.0463 },
-            ResultItem { raw: "Google Cloud Platform".to_owned(), keyword: "google cloud platform".to_owned(), score: 0.0511 },
-            ResultItem { raw: "data science".to_owned(), keyword: "data science".to_owned(), score: 0.0579 },
-            ResultItem { raw: "science community Kaggle".to_owned(), keyword: "science community kaggle".to_owned(), score: 0.0701 },
-            ResultItem { raw: "acquiring data science".to_owned(), keyword: "acquiring data science".to_owned(), score: 0.071 },
-            ResultItem { raw: "acquiring Kaggle".to_owned(), keyword: "acquiring kaggle".to_owned(), score: 0.086 },
-            ResultItem { raw: "Google Cloud".to_owned(), keyword: "google cloud".to_owned(), score: 0.0879 },
-            ResultItem { raw: "San Francisco".to_owned(), keyword: "san francisco".to_owned(), score: 0.0909 },
-            ResultItem { raw: "Anthony Goldbloom declined".to_owned(), keyword: "anthony goldbloom declined".to_owned(), score: 0.0983 },
-            ResultItem { raw: "Kaggle".to_owned(), keyword: "kaggle".to_owned(), score: 0.1103 },
+            ResultItem { raw: "Google".to_owned(), keyword: "google".to_owned(), score: 0.0251 },
+            ResultItem { raw: "Kaggle".to_owned(), keyword: "kaggle".to_owned(), score: 0.0273 },
+            ResultItem { raw: "CEO Anthony Goldbloom".to_owned(), keyword: "ceo anthony goldbloom".to_owned(), score: 0.0483 },
+            ResultItem { raw: "data science".to_owned(), keyword: "data science".to_owned(), score: 0.0550 },
+            ResultItem { raw: "acquiring data science".to_owned(), keyword: "acquiring data science".to_owned(), score: 0.0603 },
+            ResultItem { raw: "Google Cloud Platform".to_owned(), keyword: "google cloud platform".to_owned(), score: 0.0746 },
+            ResultItem { raw: "data".to_owned(), keyword: "data".to_owned(), score: 0.0800 },
+            ResultItem { raw: "San Francisco".to_owned(), keyword: "san francisco".to_owned(), score: 0.0914 },
+            ResultItem { raw: "Anthony Goldbloom declined".to_owned(), keyword: "anthony goldbloom declined".to_owned(), score: 0.0974 },
+            ResultItem { raw: "science".to_owned(), keyword: "science".to_owned(), score: 0.0983 },
+        ];
+
+        assert_eq!(kwds, results);
+    }
+
+    #[test]
+    fn short() {
+        let text = "this is a keyword";
+        let mut kwds = super::Yake::new(None, None).get_n_best(text.to_string(), Some(1));
+        // leave only 4 digits
+        kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
+        let results: Results = vec![
+            ResultItem { raw: "keyword".to_owned(), keyword: "keyword".to_owned(), score: 0.1583 },
+        ];
+
+        assert_eq!(kwds, results);
+    }
+
+    #[test]
+    fn medium() {
+        let text = "Do you like headphones? \
+        Starting this Saturday, we will be kicking off a huge sale of headphones! \
+        If you need headphones, we've got you coverered!";
+        let mut kwds = super::Yake::new(Some(1), None).get_n_best(text.to_string(), Some(3));
+        // leave only 4 digits
+        kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
+        let results: Results = vec![
+            ResultItem { raw: "headphones".to_owned(), keyword: "headphones".to_owned(), score: 0.1141 },
+            ResultItem { raw: "Saturday".to_owned(), keyword: "saturday".to_owned(), score: 0.2111 },
+            ResultItem { raw: "Starting".to_owned(), keyword: "starting".to_owned(), score: 0.4096 },
         ];
 
         assert_eq!(kwds, results);
