@@ -260,7 +260,7 @@ impl Yake {
             }
 
             cand.casing = cand.tf_a.max(cand.tf_u);
-            cand.casing /= 1.0 + cand.tf.ln_1p();
+            cand.casing /= 1.0 + cand.tf.ln();
 
             let sentence_ids = word.iter().map(|o| o.index).collect::<HashSet<usize>>();
             cand.position = (3.0 + median(sentence_ids.iter().copied()).unwrap()).ln();
@@ -504,16 +504,16 @@ mod tests {
         kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
 
         let results: Results = vec![
-            ResultItem { raw: "Kaggle".to_owned(), keyword: "kaggle".to_owned(), score: 0.2125 },
-            ResultItem { raw: "Google".to_owned(), keyword: "google".to_owned(), score: 0.2404 },
-            ResultItem { raw: "acquiring Kaggle".to_owned(), keyword: "acquiring kaggle".to_owned(), score: 0.3127 },
+            ResultItem { raw: "Kaggle".to_owned(), keyword: "kaggle".to_owned(), score: 0.2092 },
+            ResultItem { raw: "Google".to_owned(), keyword: "google".to_owned(), score: 0.2361 },
+            ResultItem { raw: "CEO Anthony Goldbloom".to_owned(), keyword: "ceo anthony goldbloom".to_owned(), score: 0.2792 },
+            ResultItem { raw: "San Francisco".to_owned(), keyword: "san francisco".to_owned(), score: 0.2986 },
+            ResultItem { raw: "acquiring Kaggle".to_owned(), keyword: "acquiring kaggle".to_owned(), score: 0.3081 },
             ResultItem { raw: "data science".to_owned(), keyword: "data science".to_owned(), score: 0.3257 },
-            ResultItem { raw: "Google Cloud".to_owned(), keyword: "google cloud".to_owned(), score: 0.4255 },
-            ResultItem { raw: "Google Cloud Platform".to_owned(), keyword: "google cloud platform".to_owned(), score: 0.5341 },
+            ResultItem { raw: "Google Cloud".to_owned(), keyword: "google cloud".to_owned(), score: 0.345 },
+            ResultItem { raw: "Google Cloud Platform".to_owned(), keyword: "google cloud platform".to_owned(), score: 0.4238 },
+            ResultItem { raw: "CEO Anthony".to_owned(), keyword: "ceo anthony".to_owned(), score: 0.4938 },
             ResultItem { raw: "acquiring data science".to_owned(), keyword: "acquiring data science".to_owned(), score: 0.5879 },
-            ResultItem { raw: "San Francisco".to_owned(), keyword: "san francisco".to_owned(), score: 0.7946 },
-            ResultItem { raw: "CEO Anthony Goldbloom".to_owned(), keyword: "ceo anthony goldbloom".to_owned(), score: 0.8672 },
-            ResultItem { raw: "acquiring data".to_owned(), keyword: "acquiring data".to_owned(), score: 0.9381 },
         ];
 
         assert_eq!(kwds, results);
