@@ -221,18 +221,13 @@ impl Yake {
             let words = sentence.words.iter().map(|w| w.to_lowercase()).collect::<Vec<String>>();
             let mut buffer = Vec::<String>::new();
             for word in words.iter() {
-                if !words.contains(word) {
-                    buffer.clear();
-                    continue;
-                }
-
                 let min_range = max(0, buffer.len() as i32 - self.config.window_size as i32) as usize;
                 let max_range = buffer.len();
                 let buffered_words = &buffer[min_range..max_range];
                 for w in buffered_words {
-                    let entry_1 = contexts.entry(word.to_string()).or_insert((vec![w.to_string()], Vec::<String>::new()));
+                    let entry_1 = contexts.entry(word.to_string()).or_insert((Vec::<String>::new(), Vec::<String>::new()));
                     entry_1.0.push(w.to_string());
-                    let entry_2 = contexts.entry(w.to_string()).or_insert((Vec::<String>::new(), vec![word.to_string()]));
+                    let entry_2 = contexts.entry(w.to_string()).or_insert((Vec::<String>::new(), Vec::<String>::new()));
                     entry_2.1.push(word.to_string());
                 }
                 buffer.push(word.to_string());
@@ -509,16 +504,16 @@ mod tests {
         kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
 
         let results: Results = vec![
-            ResultItem { raw: "Kaggle".to_owned(), keyword: "kaggle".to_owned(), score: 0.2084 },
-            ResultItem { raw: "Google".to_owned(), keyword: "google".to_owned(), score: 0.2367 },
-            ResultItem { raw: "acquiring Kaggle".to_owned(), keyword: "acquiring kaggle".to_owned(), score: 0.3017 },
-            ResultItem { raw: "data science".to_owned(), keyword: "data science".to_owned(), score: 0.3087 },
-            ResultItem { raw: "Google Cloud".to_owned(), keyword: "google cloud".to_owned(), score: 0.4095 },
-            ResultItem { raw: "Google Cloud Platform".to_owned(), keyword: "google cloud platform".to_owned(), score: 0.5018 },
-            ResultItem { raw: "acquiring data science".to_owned(), keyword: "acquiring data science".to_owned(), score: 0.5494 },
-            ResultItem { raw: "San Francisco".to_owned(), keyword: "san francisco".to_owned(), score: 0.7636 },
-            ResultItem { raw: "CEO Anthony Goldbloom".to_owned(), keyword: "ceo anthony goldbloom".to_owned(), score: 0.8166 },
-            ResultItem { raw: "science community Kaggle".to_owned(), keyword: "science community kaggle".to_owned(), score: 0.8690 },
+            ResultItem { raw: "Kaggle".to_owned(), keyword: "kaggle".to_owned(), score: 0.2125 },
+            ResultItem { raw: "Google".to_owned(), keyword: "google".to_owned(), score: 0.2404 },
+            ResultItem { raw: "acquiring Kaggle".to_owned(), keyword: "acquiring kaggle".to_owned(), score: 0.3127 },
+            ResultItem { raw: "data science".to_owned(), keyword: "data science".to_owned(), score: 0.3257 },
+            ResultItem { raw: "Google Cloud".to_owned(), keyword: "google cloud".to_owned(), score: 0.4255 },
+            ResultItem { raw: "Google Cloud Platform".to_owned(), keyword: "google cloud platform".to_owned(), score: 0.5341 },
+            ResultItem { raw: "acquiring data science".to_owned(), keyword: "acquiring data science".to_owned(), score: 0.5879 },
+            ResultItem { raw: "San Francisco".to_owned(), keyword: "san francisco".to_owned(), score: 0.7946 },
+            ResultItem { raw: "CEO Anthony Goldbloom".to_owned(), keyword: "ceo anthony goldbloom".to_owned(), score: 0.8672 },
+            ResultItem { raw: "acquiring data".to_owned(), keyword: "acquiring data".to_owned(), score: 0.9381 },
         ];
 
         assert_eq!(kwds, results);
