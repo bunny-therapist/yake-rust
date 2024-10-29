@@ -509,7 +509,7 @@ mod tests {
         let mut kwds = super::Yake::new(None, None).get_n_best(text.to_string(), Some(10));
 
         // leave only 4 digits
-        kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
+        kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).round() / 10_000.);
 
         let results: Results = vec![
             ResultItem { raw: "Google".to_owned(), keyword: "google".to_owned(), score: 0.0251 },
@@ -532,7 +532,7 @@ mod tests {
         let text = "this is a keyword";
         let mut kwds = super::Yake::new(None, None).get_n_best(text.to_string(), Some(1));
         // leave only 4 digits
-        kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
+        kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).round() / 10_000.);
         let results: Results = vec![
             ResultItem { raw: "keyword".to_owned(), keyword: "keyword".to_owned(), score: 0.1583 },
         ];
@@ -547,10 +547,10 @@ mod tests {
         If you need headphones, we've got you coverered!";
         let mut kwds = super::Yake::new(Some(1), None).get_n_best(text.to_string(), Some(3));
         // leave only 4 digits
-        kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
+        kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).round() / 10_000.);
         let results: Results = vec![
-            ResultItem { raw: "headphones".to_owned(), keyword: "headphones".to_owned(), score: 0.1140 },
-            ResultItem { raw: "Saturday".to_owned(), keyword: "saturday".to_owned(), score: 0.2110 },
+            ResultItem { raw: "headphones".to_owned(), keyword: "headphones".to_owned(), score: 0.1141 },
+            ResultItem { raw: "Saturday".to_owned(), keyword: "saturday".to_owned(), score: 0.2111 },
             ResultItem { raw: "Starting".to_owned(), keyword: "starting".to_owned(), score: 0.4096 },
         ];
 
@@ -562,9 +562,9 @@ mod tests {
         let text = "Do you need an Apple laptop?";
         let mut kwds = super::Yake::new(Some(1), None).get_n_best(text.to_string(), Some(2));
         // leave only 4 digits
-        kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
+        kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).round() / 10_000.);
         let results: Results = vec![
-            ResultItem { raw: "Apple".to_owned(), keyword: "apple".to_owned(), score: 0.1447 },
+            ResultItem { raw: "Apple".to_owned(), keyword: "apple".to_owned(), score: 0.1448 },
             ResultItem { raw: "laptop".to_owned(), keyword: "laptop".to_owned(), score: 0.1583 },
         ];
 
