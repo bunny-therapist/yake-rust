@@ -221,6 +221,10 @@ impl Yake {
             let words = sentence.words.iter().map(|w| w.to_lowercase()).collect::<Vec<String>>();
             let mut buffer = Vec::<String>::new();
             for word in words.iter() {
+                if HashSet::<String>::from_iter(word.chars().map(|c| c.to_string())).is_subset(&self.config.punctuation) {
+                    buffer.clear();
+                    continue;
+                }
                 let min_range = max(0, buffer.len() as i32 - self.config.window_size as i32) as usize;
                 let max_range = buffer.len();
                 let buffered_words = &buffer[min_range..max_range];
@@ -270,22 +274,27 @@ impl Yake {
             cand.frequency /= mean_tf + std_tf;
 
             cand.wl = 0.0;
-
-            let ctx = contexts.get(key).unwrap();
-            let ctx_1_hash: HashSet<String> = HashSet::from_iter(ctx.clone().0);
-            if ctx.0.len() > 0 {
-                cand.wl = ctx_1_hash.len() as f64;
-                cand.wl /= ctx.0.len() as f64;
-            }
-            cand.pl = ctx_1_hash.len() as f64 / max_tf;
-
+            cand.pl = 0.0;
             cand.wr = 0.0;
-            let ctx_2_hash: HashSet<String> = HashSet::from_iter(ctx.clone().1);
-            if ctx.1.len() > 0 {
-                cand.wr = ctx_2_hash.len() as f64;
-                cand.wr /= ctx.1.len() as f64;
+            cand.pr = 0.0;
+
+            let ctx: Option<&(Vec<String>, Vec<String>)> = contexts.get(key);
+            if ctx.is_some() {
+                let existing_ctx = ctx.unwrap();
+                let ctx_1_hash: HashSet<String> = HashSet::from_iter(existing_ctx.clone().0);
+                if existing_ctx.0.len() > 0 {
+                    cand.wl = ctx_1_hash.len() as f64;
+                    cand.wl /= existing_ctx.0.len() as f64;
+                }
+                cand.pl = ctx_1_hash.len() as f64 / max_tf;
+    
+                let ctx_2_hash: HashSet<String> = HashSet::from_iter(existing_ctx.clone().1);
+                if existing_ctx.1.len() > 0 {
+                    cand.wr = ctx_2_hash.len() as f64;
+                    cand.wr /= existing_ctx.1.len() as f64;
+                }
+                cand.pr = ctx_2_hash.len() as f64 / max_tf;
             }
-            cand.pr = ctx_2_hash.len() as f64 / max_tf;
 
             cand.relatedness = 1.0;
             cand.relatedness += (cand.wr + cand.wl) * (cand.tf / max_tf);
