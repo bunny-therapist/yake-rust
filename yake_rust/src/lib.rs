@@ -196,7 +196,7 @@ impl Yake {
             let shift = sentences[0..idx].iter().map(|s| s.length).sum::<usize>();
 
             for (w_idx, word) in sentence.words.iter().enumerate() {
-                if self.is_alphanum(word.to_string(), None)
+                if word.len() > 0 && self.is_alphanum(word.to_string(), None)
                     && HashSet::from_iter(word.split("").map(|x| x.to_string())).intersection(&self.config.punctuation).count() == 0
                 {
                     let index = word.to_lowercase();
@@ -549,8 +549,8 @@ mod tests {
         // leave only 4 digits
         kwds.iter_mut().for_each(|r| r.score = (r.score * 10_000.).trunc() / 10_000.);
         let results: Results = vec![
-            ResultItem { raw: "headphones".to_owned(), keyword: "headphones".to_owned(), score: 0.1141 },
-            ResultItem { raw: "Saturday".to_owned(), keyword: "saturday".to_owned(), score: 0.2111 },
+            ResultItem { raw: "headphones".to_owned(), keyword: "headphones".to_owned(), score: 0.1140 },
+            ResultItem { raw: "Saturday".to_owned(), keyword: "saturday".to_owned(), score: 0.2110 },
             ResultItem { raw: "Starting".to_owned(), keyword: "starting".to_owned(), score: 0.4096 },
         ];
 
