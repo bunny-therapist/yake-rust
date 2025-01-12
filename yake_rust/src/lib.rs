@@ -380,6 +380,7 @@ impl Yake {
 
             cand.weight = (cand.relatedness * cand.position)
                 / (cand.casing + (cand.frequency / cand.relatedness) + (cand.sentences / cand.relatedness));
+
             features.insert(key, cand);
         }
 
@@ -683,6 +684,19 @@ mod tests {
     }
 
     #[test]
+    fn genitive() {
+        let text = "A man's man.";
+        let stopwords = StopWords::predefined("en").unwrap();
+        let mut actual = Yake::new(stopwords, Config { ngrams: 1, ..Default::default() }).get_n_best(text, Some(2));
+        // leave only 4 digits
+        actual.iter_mut().for_each(|r| r.score = (r.score * 10_000.).round() / 10_000.);
+        let expected: Results = vec![ResultItem { raw: "man".into(), keyword: "man".into(), score: 0.1487 }];
+        // Results agree with reference implementation LIAAD/yake
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
     fn weekly_newsletter_short() {
         let text = "This is your weekly newsletter!";
         let stopwords = StopWords::predefined("en").unwrap();
@@ -740,7 +754,7 @@ mod tests {
 
         assert_eq!(actual, expected);
     }
-    
+
     #[test]
     fn google_sample_single_ngram() {
         let text = include_str!("test_google.txt"); // LIAAD/yake sample text
