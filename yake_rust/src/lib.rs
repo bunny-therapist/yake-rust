@@ -380,7 +380,6 @@ impl Yake {
 
             cand.weight = (cand.relatedness * cand.position)
                 / (cand.casing + (cand.frequency / cand.relatedness) + (cand.sentences / cand.relatedness));
-    
             features.insert(key, cand);
         }
 
